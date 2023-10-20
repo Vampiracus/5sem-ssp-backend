@@ -13,9 +13,11 @@ export default function postProduct(product: Record<string, any> | correctProps)
     if (product.cost < 0) {
         return 'Цена не может быть отрицательной';
     }
-    const sql = `INSERT product(name, cost) VALUES(\'${product.name}\', ${product.cost})`;
+
+    const sql = 'INSERT product(name, cost) VALUES(?, ?)';
+    const query = global.mysqlconn.format(sql, [product.name, product.cost]);
     return new Promise((resolve, reject) => {
-        global.mysqlconn.query(sql, err => {
+        global.mysqlconn.query(query, err => {
             if (err) {
                 reject(err);
             }
