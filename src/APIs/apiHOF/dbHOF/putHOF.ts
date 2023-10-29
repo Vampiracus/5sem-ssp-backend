@@ -4,7 +4,7 @@ export default function getPut<DataType extends Record<string, any>>(
     tableName: string,
     idColumnName: string,
     columns: string[],
-    dataValidator?: (obj: DataType) => string | boolean,
+    dataValidator?: (obj: DataType, isPost?: boolean) => string | boolean,
     errorInterpreter?: (err: { code: string}) => string | void
 ) {
     type putFunction = (putObject: Record<string, any> | DataType) 
@@ -20,7 +20,7 @@ export default function getPut<DataType extends Record<string, any>>(
             return `Передан невалидный JSON-объект: нет поля ${idColumnName}`;
 
         if (dataValidator) {
-            const validated = dataValidator(putObject as DataType);
+            const validated = dataValidator(putObject as DataType, false);
             if (typeof validated === 'string')
                 return validated;
         }
@@ -30,7 +30,8 @@ export default function getPut<DataType extends Record<string, any>>(
         WHERE ${idColumnName} = ?`;
         const query = global.mysqlconn.format(
             sql,
-            columns.map(column => (putObject[column])).concat([putObject[idColumnName]])
+            columns.map(column => (putObject[column] === 'NULL' ? null : putObject[column]))
+                .concat([putObject[idColumnName]])
         );
 
         return new Promise((resolve, reject) => {

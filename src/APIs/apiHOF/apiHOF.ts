@@ -13,7 +13,7 @@ export default function apiHOF<DataType extends Record<string, any>>(
     idColumnName: string,
     columns: string[],
     url: string,
-    dataValidator?: (data: DataType) => string | boolean,
+    dataValidator?: (data: DataType, isPost?: boolean) => string | boolean,
     errInterpreter?: (err: { code: string}) => string | void
 ) {
     const post = getPost(tableName, columns.concat([idColumnName]), dataValidator, errInterpreter);

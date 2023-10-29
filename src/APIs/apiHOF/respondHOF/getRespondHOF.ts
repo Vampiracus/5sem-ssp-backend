@@ -7,8 +7,9 @@ export default function getRespongHOF<DataType extends Record<string, any>>
             .then(objs => {
                 res.status(200).send(objs);
             })
-            .catch(() => {
-                res.status(500).send('Не получилось получить продукты');
+            .catch(err => {
+                res.status(500).send('Не получилось получить данные из базы данных');
+                console.log(err);
             });
     };
 }

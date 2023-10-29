@@ -1,4 +1,4 @@
-export default function postRespondHOF(post: (obj : any) => Promise<boolean | string> | string) :
+export default function postRespondHOF(post: (obj: any) => Promise<boolean | string> | string):
 (req: any, res: any) => void {
     return (req, res) => {
         const body = req.body;
@@ -21,6 +21,7 @@ export default function postRespondHOF(post: (obj : any) => Promise<boolean | st
                         return;
                     }
                     res.status(400).send('Не получилось добавить в базу данных');
+                    console.log(err);
                 });
         }
     };

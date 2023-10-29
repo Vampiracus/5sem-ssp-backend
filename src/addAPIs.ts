@@ -1,10 +1,16 @@
 import { Express } from 'express';
 import addProductAPI from './APIs/product/addProductAPI';
-// import addClientAPI from './APIs/client/addClientAPI';
-import addhoftestAPI from './APIs/hoftest/addhoftestAPI';
+import addClientAPI from './APIs/client/addClientAPI';
+import addManagerAPI from './APIs/manager/addManagerAPI';
+import addOrderAPI from './APIs/order/addOrderAPI';
+import addOrderItemAPI from './APIs/order_item/addOrderItemAPI';
+import addShipmentAPI from './APIs/shipment/addShipmentAPI';
 
 export default function addAPIs(app: Express) {
     addProductAPI(app);
-    // addClientAPI(app);
-    addhoftestAPI(app);
+    addClientAPI(app);
+    addManagerAPI(app);
+    addOrderAPI(app);
+    addOrderItemAPI(app);
+    addShipmentAPI(app);
 }

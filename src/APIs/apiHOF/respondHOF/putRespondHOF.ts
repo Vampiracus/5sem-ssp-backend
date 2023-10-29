@@ -1,4 +1,4 @@
-export default function putRespondHOF(put: (obj : any) => Promise<boolean | string> | string) :
+export default function putRespondHOF(put: (obj: any) => Promise<boolean | string> | string):
 (req: any, res: any) => void {
     return (req, res) => {
         const body = req.body;

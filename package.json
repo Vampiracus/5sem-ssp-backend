@@ -6,7 +6,7 @@
   "scripts": {
     "start": "npx ts-node src/server.ts",
     "typeslint": "tsc --noEmit",
-    "lint": "npx eslint --ext .ts",
+    "lint": "npx eslint --ext .ts src/",
     "lint:fix": "npx eslint --ext .ts src/ --fix",
     "lint:quiet": "npx eslint --ext .ts src/ --quiet",
     "test": "ts-mocha"

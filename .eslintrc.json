@@ -67,6 +67,15 @@
             "ExportDeclaration": { "multiline": true }
         }],
         "brace-style": ["error", "1tbs"],
-        "space-before-blocks": "error"
+        "space-before-blocks": "error",
+        "key-spacing": ["error", {
+            "afterColon": true,
+            "beforeColon": false,
+            "mode": "minimum"
+            }],
+        "no-var": "error",
+
+        
+        "@typescript-eslint/type-annotation-spacing": "error"
     }
 }

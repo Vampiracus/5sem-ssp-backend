@@ -51,7 +51,7 @@ CREATE TABLE order_item
 	CONSTRAINT product_greater_than_0 CHECK (product_count >= 0),
 	order_id             INTEGER NOT NULL,
 	FOREIGN KEY (order_id) REFERENCES _order (id),
-	product_id           INTEGER NULL,
+	product_id           INTEGER NOT NULL,
 	FOREIGN KEY (product_id) REFERENCES product (id)
 );
 
