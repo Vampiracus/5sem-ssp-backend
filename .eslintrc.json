@@ -33,7 +33,6 @@
             "always"
         ],
         "import/extensions": "off",
-        "no-unused-vars": "error",
         "no-undef": "error",
         "no-restricted-exports": "off",
         "comma-dangle": [
