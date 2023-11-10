@@ -1,7 +1,7 @@
 import { Request } from 'express';
 
 export default async function getUserByCookie(cookie: string, req: Request) {
-    if (!cookie) {
+    if (cookie === '') {
         req.user = null;
     } else {
         let sql = 'SELECT * FROM session WHERE cookie = ?';
@@ -36,5 +36,25 @@ export default async function getUserByCookie(cookie: string, req: Request) {
 
         if (usr === null) req.user = null;
         else Object.assign(req.user as Record<string, any>, usr);
+    }
+}
+
+export async function isManager(req: Request): Promise<boolean> {
+    try {
+        await getUserByCookie(req.cookies.usercookie, req);
+        if (!req.user || req.user.user_type !== 'manager') return false;
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+
+export async function isAuthorized(req: Request): Promise<boolean> {
+    try {
+        await getUserByCookie(req.cookies.usercookie, req);
+        if (!req.user) return false;
+        return true;
+    } catch (e) {
+        return false;
     }
 }

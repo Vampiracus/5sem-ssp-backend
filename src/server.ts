@@ -19,9 +19,9 @@ conn.connect(err => {
 const PORT = 3000;
 
 const app = express();
-app.set('etag', false); // turn off
 app.use(express.json());
 app.use(cookieParser('bywbQy0zR9f5U8G'));
+app.set('etag', false); // turn off
 //@ts-ignore
 app.use((err, req, res, next) => {
     if (err instanceof SyntaxError) {

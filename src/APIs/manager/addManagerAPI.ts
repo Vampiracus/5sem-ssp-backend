@@ -1,6 +1,7 @@
 import { Express } from 'express';
 import apiHOF from '../apiHOF/apiHOF';
 import managerErrorInterpreter from './managerErrorInterpreter';
+import { isManager } from '../../cookies/cookies';
 
 type Manager = {
     login: string,
@@ -16,6 +17,11 @@ export default function (app: Express) {
         'login',
         ['name', 'password'],
         '/manager',
+        {
+            post: isManager,
+            get: isManager,
+            put: isManager,
+        },
         undefined,
         managerErrorInterpreter
     );

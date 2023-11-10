@@ -1,5 +1,6 @@
 import { Express } from 'express';
 import apiHOF from '../apiHOF/apiHOF';
+import { isManager } from '../../cookies/cookies';
 
 type Product = {
     id: number,
@@ -14,6 +15,11 @@ export default function (app: Express) {
         'id',
         ['cost', 'name'],
         '/product',
+        {
+            post: isManager,
+            get: isManager,
+            put: isManager,
+        },
         (product, isPost) => {
             if (product.cost < 0) {
                 return 'Цена не может быть отрицательной';

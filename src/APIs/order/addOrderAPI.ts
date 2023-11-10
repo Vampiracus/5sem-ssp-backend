@@ -1,6 +1,7 @@
 import { Express } from 'express';
 import apiHOF from '../apiHOF/apiHOF';
 import orderErrorInterpreter from './orderErrorInterpreter';
+import { isAuthorized, isManager } from '../../cookies/cookies';
 
 type Order = {
     id: number,
@@ -19,6 +20,11 @@ export default function (app: Express) {
         'id',
         ['total', 'contract', 'contract_date', 'status', 'client_login'],
         '/order',
+        {
+            post: isAuthorized,
+            get: isManager,
+            put: isManager,
+        },
         (item, isPost) => {
             if (isPost && (item.id as unknown) !== 'NULL')
                 return 'ID должно быть NULL';

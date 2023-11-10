@@ -38,7 +38,7 @@ export default function addLoginManagerAPI(app: Express) {
         }
         const cookie = uuidv4();
         
-        req.user.user_type = 'client';
+        req.user.user_type = 'manager';
         req.user.cookie = cookie;
         try {
             postCookie(req.user);

@@ -35,6 +35,7 @@
         "import/extensions": "off",
         "no-undef": "error",
         "no-restricted-exports": "off",
+        "comma-spacing": "error",
         "comma-dangle": [
             "error",
             {
