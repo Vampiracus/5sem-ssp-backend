@@ -29,7 +29,7 @@ CREATE TABLE _order
 	CONSTRAINT total_greater_than_0 CHECK (total >= 0),
 	contract             VARCHAR(20),
 	contract_date        TIMESTAMP,
-	status               VARCHAR(20) NOT NULL,
+	status               VARCHAR(40) NOT NULL,
 	CONSTRAINT valid_status CHECK ( status IN ('created', 'processing (no contract)', 'waiting for changes', 'processing (no signature)', 'processing', 'cancelled', 'ready', 'finished') ),
 	client_login         VARCHAR(20) NOT NULL,
 	FOREIGN KEY (client_login) REFERENCES client (login)

@@ -59,7 +59,7 @@ export async function isAuthorized(req: Request): Promise<boolean> {
     }
 }
 
-export async function isManagerOrSameUser_orderItem(req: Request): Promise<boolean> {
+export async function isManagerOrSameUser_orderItem_delete(req: Request): Promise<boolean> {
     try {
         await getUserByCookie(req.cookies.usercookie, req);
         if (!req.user) return false;
@@ -79,6 +79,33 @@ export async function isManagerOrSameUser_orderItem(req: Request): Promise<boole
             });
         });
     } catch (e) {
+        console.log(e);
+        return false;
+    }
+}
+
+export async function isOrderCreatedAndisUserManagerOrSameClient_orderItem_post(
+    req: Request
+): Promise<boolean> {
+    try {
+        await getUserByCookie(req.cookies.usercookie, req);
+        if (!req.user) return false;
+        if (req.user.user_type === 'manager') return true;
+        const { order_id } = req.body;
+        if (!order_id) return false;
+        const sql = 'SELECT client_login, status FROM _order WHERE id = ?';
+        const query = global.mysqlconn.format(sql, [order_id]);
+        return await new Promise((resolve, reject) => {
+            global.mysqlconn.query(query, (err, res) => {
+                if (err) reject(err);
+                if (!req.user || res.length === 0
+                    || res[0].client_login !== req.user.login || res[0].status !== 'created')
+                    resolve(false);
+                else resolve(true);
+            });
+        });
+    } catch (e) {
+        console.log(e);
         return false;
     }
 }
