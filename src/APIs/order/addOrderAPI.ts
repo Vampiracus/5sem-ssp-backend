@@ -24,6 +24,7 @@ export default function (app: Express) {
             post: isAuthorized,
             get: isManager,
             put: isManager,
+            delete: isManager,
         },
         (item, isPost) => {
             if (isPost && (item.id as unknown) !== 'NULL')

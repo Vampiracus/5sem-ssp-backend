@@ -19,6 +19,7 @@ export default function (app: Express) {
             post: isManager,
             get: isManager,
             put: isManager,
+            delete: isManager,
         },
         (product, isPost) => {
             if (product.cost < 0) {

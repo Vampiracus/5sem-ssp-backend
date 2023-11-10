@@ -58,3 +58,27 @@ export async function isAuthorized(req: Request): Promise<boolean> {
         return false;
     }
 }
+
+export async function isManagerOrSameUser_orderItem(req: Request): Promise<boolean> {
+    try {
+        await getUserByCookie(req.cookies.usercookie, req);
+        if (!req.user) return false;
+        if (req.user.user_type === 'manager') return true;
+        const { id } = req.params;
+        if (!id) return false;
+        const sql = `
+        SELECT client_login FROM _order JOIN order_item ON _order.id = order_item.order_id
+        WHERE order_item.id = ${id};
+        `;
+        return await new Promise((resolve, reject) => {
+            global.mysqlconn.query(sql, (err, res) => {
+                if (err) reject(err);
+                if (!req.user || res.length === 0 || res[0].client_login !== req.user.login) 
+                    resolve(false);
+                else resolve(true);
+            });
+        });
+    } catch (e) {
+        return false;
+    }
+}

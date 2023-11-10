@@ -23,6 +23,7 @@ export default function (app: Express) {
             post: isManager,
             get: isManager,
             put: isManager,
+            delete: isManager,
         },
         undefined,
         clientErrorInterpreter
