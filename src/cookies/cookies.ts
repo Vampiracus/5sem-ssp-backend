@@ -9,14 +9,17 @@ export default async function getUserByCookie(cookie: string, req: Request) {
         req.user = await new Promise((resolve, reject) => {
             global.mysqlconn.query(query, (err, res) => {
                 if (err) reject(err);
+                if (res.length === 0) resolve(null);
                 resolve(res[0]);
             });
         });
+
         if (!req.user) {
             req.user = null;
             return;
         }
-        if (req.user?.user_type === 'client') {
+
+        if (req.user.user_type === 'client') {
             sql = 'SELECT * FROM client WHERE login = ?';
             query = global.mysqlconn.format(sql, [req.user.client_login]);
         } else {
@@ -26,9 +29,12 @@ export default async function getUserByCookie(cookie: string, req: Request) {
         const usr = await new Promise((resolve, reject) => {
             global.mysqlconn.query(query, (err, res) => {
                 if (err) reject(err);
+                if (res.length === 0) resolve(null);
                 resolve(res[0]);
             });
         });
-        Object.assign(req.user as Record<string, any>, usr);
+
+        if (usr === null) req.user = null;
+        else Object.assign(req.user as Record<string, any>, usr);
     }
 }
