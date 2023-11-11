@@ -6,7 +6,6 @@ import {
     isManagerOrSameUser_orderItem_delete,
     isOrderCreatedAndisUserManagerOrSameClient_orderItem_post
 } from '../../cookies/cookies';
-import userCreateItem from './otherAPIs/userCreateItem';
 
 type OrderItem = {
     id: number,
@@ -36,6 +35,4 @@ export default function (app: Express) {
         },
         orderItemErrorInterpreter
     );
-
-    userCreateItem(app);
 }

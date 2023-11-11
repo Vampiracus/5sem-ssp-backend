@@ -1,7 +1,16 @@
 import { Express } from 'express';
+
 import apiHOF from '../apiHOF/apiHOF';
 import orderErrorInterpreter from './orderErrorInterpreter';
+
 import { isAuthorized, isManager } from '../../cookies/cookies';
+
+import userCreateOrder from './userCreateOrder';
+
+import getOrdersWithoutContract from './getOrdersWithoutContract';
+
+import setOrderWaitingForChanges from './setOrderWaitingForChanges';
+import setOrderHasContract from './setOrderHasContract';
 
 type Order = {
     id: number,
@@ -33,4 +42,10 @@ export default function (app: Express) {
         },
         orderErrorInterpreter
     );
+
+    userCreateOrder(app);
+    getOrdersWithoutContract(app);
+
+    setOrderWaitingForChanges(app);
+    setOrderHasContract(app);
 }
