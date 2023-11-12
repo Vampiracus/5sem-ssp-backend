@@ -3,8 +3,8 @@ import apiHOF from '../apiHOF/apiHOF';
 import orderItemErrorInterpreter from './orderItemErrorInterpreter';
 import {
     isManager,
-    isManagerOrSameUser_orderItem_delete,
-    isOrderCreatedAndisUserManagerOrSameClient_orderItem_post
+    isOrderCreatedOrWaitingForChangesAndIsUserManagerOrSameUser_orderItem_delete,
+    isOrderCreatedOrWaitingForChangesAndisUserManagerOrSameClient_orderItem_post
 } from '../../cookies/cookies';
 
 type OrderItem = {
@@ -23,10 +23,10 @@ export default function (app: Express) {
         ['product_count', 'order_id', 'product_id'],
         '/order_item',
         {
-            post: isOrderCreatedAndisUserManagerOrSameClient_orderItem_post,
+            post: isOrderCreatedOrWaitingForChangesAndisUserManagerOrSameClient_orderItem_post,
             get: isManager,
             put: isManager,
-            delete: isManagerOrSameUser_orderItem_delete,
+            delete: isOrderCreatedOrWaitingForChangesAndIsUserManagerOrSameUser_orderItem_delete,
         },
         (item, isPost) => {
             if (isPost && (item.id as unknown) !== 'NULL')

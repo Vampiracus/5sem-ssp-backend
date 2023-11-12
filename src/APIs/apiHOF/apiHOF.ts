@@ -12,7 +12,7 @@ type UserValidator = {
     get: (req: Request) => Promise<boolean>,
     post: (req: Request) => Promise<boolean>,
     put: (req: Request) => Promise<boolean>,
-    delete: (req: Request) => Promise<boolean>
+    delete: 'no delete' | ((req: Request) => Promise<boolean>)
 }
 
 // НЕ ДОЛЖНО быть колонки idColumnName среди columns
@@ -35,6 +35,7 @@ export default function apiHOF<DataType extends Record<string, any>>(
     const get = getGet(tableName, columns.concat([idColumnName]));
     app.get(url, getRespondHOF(get, userValidator.get));
 
+    if (userValidator.delete === 'no delete') return;
     const del = getDelete(tableName, idColumnName, errInterpreter);
     app.delete(url + '/:id', deleteRespondHOF(del, userValidator.delete));
 }

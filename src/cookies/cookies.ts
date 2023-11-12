@@ -59,7 +59,9 @@ export async function isAuthorized(req: Request): Promise<boolean> {
     }
 }
 
-export async function isManagerOrSameUser_orderItem_delete(req: Request): Promise<boolean> {
+export async function isOrderCreatedOrWaitingForChangesAndIsUserManagerOrSameUser_orderItem_delete(
+    req: Request
+): Promise<boolean> {
     try {
         await getUserByCookie(req.cookies.usercookie, req);
         if (!req.user) return false;
@@ -67,13 +69,17 @@ export async function isManagerOrSameUser_orderItem_delete(req: Request): Promis
         const { id } = req.params;
         if (!id) return false;
         const sql = `
-        SELECT client_login FROM _order JOIN order_item ON _order.id = order_item.order_id
-        WHERE order_item.id = ${id};
+        SELECT client_login, status FROM _order JOIN order_item ON _order.id = order_item.order_id
+        WHERE order_item.id = ?;
         `;
+        const query = global.mysqlconn.format(sql, [id]);
         return await new Promise((resolve, reject) => {
-            global.mysqlconn.query(sql, (err, res) => {
+            global.mysqlconn.query(query, (err, res) => {
                 if (err) reject(err);
-                if (!req.user || res.length === 0 || res[0].client_login !== req.user.login) 
+                if (!req.user
+                    || res.length === 0
+                    || res[0].client_login !== req.user.login
+                    || (res[0].status !== 'created' && res[0].status !== 'waiting for changes'))
                     resolve(false);
                 else resolve(true);
             });
@@ -84,7 +90,7 @@ export async function isManagerOrSameUser_orderItem_delete(req: Request): Promis
     }
 }
 
-export async function isOrderCreatedAndisUserManagerOrSameClient_orderItem_post(
+export async function isOrderCreatedOrWaitingForChangesAndisUserManagerOrSameClient_orderItem_post(
     req: Request
 ): Promise<boolean> {
     try {
@@ -99,7 +105,60 @@ export async function isOrderCreatedAndisUserManagerOrSameClient_orderItem_post(
             global.mysqlconn.query(query, (err, res) => {
                 if (err) reject(err);
                 if (!req.user || res.length === 0
-                    || res[0].client_login !== req.user.login || res[0].status !== 'created')
+                    || res[0].client_login !== req.user.login 
+                    || (res[0].status !== 'created' && res[0].status !== 'waiting for changes'))
+                    resolve(false);
+                else resolve(true);
+            });
+        });
+    } catch (e) {
+        console.log(e);
+        return false;
+    }
+}
+
+export async function isManagerOrSameUser_order_patch(req: Request): Promise<boolean> {
+    try {
+        await getUserByCookie(req.cookies.usercookie, req);
+        if (!req.user) return false;
+        if (req.user.user_type === 'manager') return true;
+        const { id } = req.params;
+        if (!id) return false;
+        const sql = 'SELECT client_login, status FROM _order WHERE id = ?';
+        const query = global.mysqlconn.format(sql, [id]);
+        return new Promise((resolve, reject) => {
+            global.mysqlconn.query(query, (err, res) => {
+                if (err) reject(err);
+                if (!req.user || res.length === 0
+                    || res[0].client_login !== req.user.login)
+                    resolve(false);
+                else resolve(true);
+            });
+        });
+    } catch (e) {
+        console.log(e);
+        return false;
+    }
+}
+
+export async function isOrderCreatedOrWaitingForChangesAndIsUserManagerOrSameUser_order_delete(
+    req: Request
+): Promise<boolean> {
+    try {
+        await getUserByCookie(req.cookies.usercookie, req);
+        if (!req.user) return false;
+        if (req.user.user_type === 'manager') return true;
+        const { id } = req.params;
+        if (!id) return false;
+        const sql = 'SELECT client_login, status FROM _order WHERE id = ?';
+        const query = global.mysqlconn.format(sql, [id]);
+        return await new Promise((resolve, reject) => {
+            global.mysqlconn.query(query, (err, res) => {
+                if (err) reject(err);
+                if (!req.user
+                    || res.length === 0
+                    || res[0].client_login !== req.user.login
+                    || (res[0].status !== 'created' && res[0].status !== 'waiting for changes'))
                     resolve(false);
                 else resolve(true);
             });
