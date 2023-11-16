@@ -3,7 +3,7 @@ import { Request } from 'express';
 export default async function getUserByCookie(cookie: string, req: Request) {
     if (cookie === '') {
         req.user = null;
-    } else {
+    } else try {
         let sql = 'SELECT * FROM session WHERE cookie = ?';
         let query = global.mysqlconn.format(sql, [cookie]);
         req.user = await new Promise((resolve, reject) => {
@@ -36,6 +36,8 @@ export default async function getUserByCookie(cookie: string, req: Request) {
 
         if (usr === null) req.user = null;
         else Object.assign(req.user as Record<string, any>, usr);
+    } catch (e) {
+        console.log(e);
     }
 }
 

@@ -6,6 +6,7 @@ import addOrderAPI from './APIs/order/addOrderAPI';
 import addOrderItemAPI from './APIs/order_item/addOrderItemAPI';
 import addShipmentAPI from './APIs/shipment/addShipmentAPI';
 import addAuthAPI from './APIs/authorization/addAuthAPI';
+import addUserAPI from './APIs/user/addUserAPI';
 
 export default function addAPIs(app: Express) {
     addProductAPI(app);
@@ -16,4 +17,5 @@ export default function addAPIs(app: Express) {
     addShipmentAPI(app);
     
     addAuthAPI(app);
+    addUserAPI(app);
 }
