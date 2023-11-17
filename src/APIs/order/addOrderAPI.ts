@@ -16,6 +16,7 @@ import setOrderWaitingForChanges from './setOrderWaitingForChanges';
 import setOrderHasContract from './setOrderHasContract';
 import setContractIsSigned from './setContractIsSigned';
 import userDeleteOrder from './userDeleteOrder';
+import getMyOrders from './getMyOrders';
 
 type Order = {
     id: number,
@@ -51,6 +52,7 @@ export default function (app: Express) {
     userCreateOrder(app);
     userDeleteOrder(app);
     getOrdersWithoutContract(app);
+    getMyOrders(app);
 
     setOrderWaitingForChanges(app);
     setOrderHasContract(app);

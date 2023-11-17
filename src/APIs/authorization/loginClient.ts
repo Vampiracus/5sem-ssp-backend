@@ -47,7 +47,11 @@ export default function addLoginClientAPI(app: Express) {
             console.log('ОШИБКА\n', e);
             return;
         }
-        res.cookie('usercookie', cookie);
+        res.cookie('usercookie', cookie, {
+            httpOnly: true,
+            secure: true,
+            maxAge: 1000 * 60 * 60,
+        });
 
         res.status(200).send('successful authorization');
     });

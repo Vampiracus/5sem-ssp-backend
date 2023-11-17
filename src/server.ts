@@ -34,10 +34,12 @@ app.use((err, req, res, next) => {
     res.setHeader('Last-Modified', (new Date()).toUTCString());
     next();
 });
-// app.use(function(_, res, next) {
-// 	res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
-// 	next();
-// });
+app.use(function(_, res, next) {
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Headers', 'content-type');
+    next();
+});
 
 addAPIs(app);
 
