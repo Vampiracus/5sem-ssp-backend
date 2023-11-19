@@ -6,6 +6,7 @@ import {
     isOrderCreatedOrWaitingForChangesAndIsUserManagerOrSameUser_orderItem_delete,
     isOrderCreatedOrWaitingForChangesAndisUserManagerOrSameClient_orderItem_post
 } from '../../cookies/cookies';
+import { order_itemURL } from '../url';
 
 type OrderItem = {
     id: number,
@@ -21,7 +22,7 @@ export default function (app: Express) {
         'order_item',
         'id',
         ['product_count', 'order_id', 'product_id'],
-        '/order_item',
+        order_itemURL,
         {
             post: isOrderCreatedOrWaitingForChangesAndisUserManagerOrSameClient_orderItem_post,
             get: isManager,

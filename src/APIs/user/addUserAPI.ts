@@ -1,8 +1,9 @@
 import { Express } from 'express';
 import getUserByCookie from '../../cookies/cookies';
+import { userURL } from '../url';
 
 export default function addUserAPI(app: Express) {
-    app.get('/user', async (req, res) => {
+    app.get(userURL, async (req, res) => {
         await getUserByCookie(req.cookies.usercookie, req);
         if (req.user) {
             const returned = {

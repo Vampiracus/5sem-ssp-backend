@@ -1,9 +1,10 @@
 import { Express } from 'express';
 import { isManager } from '../../cookies/cookies';
+import { managerSetsOrderContractURL } from '../url';
 
 export default function setOrderHasContract(app: Express) {
     // Дата должна приходить в виде числа
-    app.patch('/order/has_contract/:id', async (req, res) => {
+    app.patch(managerSetsOrderContractURL, async (req, res) => {
         const canPatch = await isManager(req);
         if (!canPatch) {
             res.status(403).send('');

@@ -1,6 +1,7 @@
 import { Express } from 'express';
 import apiHOF from '../apiHOF/apiHOF';
 import { isManager } from '../../cookies/cookies';
+import { productURL } from '../url';
 
 type Product = {
     id: number,
@@ -14,7 +15,7 @@ export default function (app: Express) {
         'product',
         'id',
         ['cost', 'name'],
-        '/product',
+        productURL,
         {
             post: isManager,
             get: isManager,

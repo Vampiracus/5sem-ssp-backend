@@ -3,6 +3,7 @@ import { Express } from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import getUserByCookie from '../../cookies/cookies';
 import postCookie from '../../cookies/postCookie';
+import { loginManagerURL } from '../url';
 
 async function authorizationAttemptManager(login: string, password: string): Promise<User | null> {
     const sql = 'SELECT * FROM manager WHERE login = ? AND password = ?';
@@ -18,7 +19,7 @@ async function authorizationAttemptManager(login: string, password: string): Pro
 }
 
 export default function addLoginManagerAPI(app: Express) {
-    app.post('/login/manager', async (req, res) => {
+    app.post(loginManagerURL, async (req, res) => {
         await getUserByCookie(req.cookies.usercookie, req);
         if (req.user !== null) {
             res.status(400).send('User already authorized');

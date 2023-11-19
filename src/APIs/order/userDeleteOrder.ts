@@ -1,9 +1,10 @@
 import { Express } from 'express';
 // eslint-disable-next-line max-len
 import { isOrderCreatedOrWaitingForChangesAndIsUserManagerOrSameUser_order_delete } from '../../cookies/cookies';
+import { userDeletesOrderURL } from '../url';
 
 export default function userDeleteOrder(app: Express) {
-    app.delete('/order/:id', async (req, res) => {
+    app.delete(userDeletesOrderURL, async (req, res) => {
         // eslint-disable-next-line max-len
         const canDelete = await isOrderCreatedOrWaitingForChangesAndIsUserManagerOrSameUser_order_delete(req);  // id is checked here
         if (!canDelete) {

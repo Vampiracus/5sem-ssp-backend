@@ -1,8 +1,9 @@
 import { Express } from 'express';
 import makeCookieInvalid from '../../cookies/makeCookieInvalid';
+import { logoutURL } from '../url';
 
 export default function addLogoutAPI(app: Express) {
-    app.post('/logout', async (req, res) => {
+    app.post(logoutURL, async (req, res) => {
         if (!req.cookies.usercookie) {
             res.status(200).send('OK');
             return;

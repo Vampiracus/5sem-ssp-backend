@@ -1,6 +1,7 @@
 import { Express } from 'express';
 import apiHOF from '../apiHOF/apiHOF';
 import { isManager } from '../../cookies/cookies';
+import { shipmentURL } from '../url';
 
 type Shipment = {
     id: number,
@@ -16,7 +17,7 @@ export default function (app: Express) {
         'shipment',
         'id',
         ['date', 'shipped_count', 'manager_login', 'order_item_id'],
-        '/shipment',
+        shipmentURL,
         {
             post: isManager,
             get: isManager,

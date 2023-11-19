@@ -1,8 +1,9 @@
 import { Express } from 'express';
 import { isManager } from '../../cookies/cookies';
+import { ordersNoContractURL } from '../url';
 
 export default function getOrdersWithoutContract(app: Express) {
-    app.get('/order/no_contract', async (req, res) => {
+    app.get(ordersNoContractURL, async (req, res) => {
         try {
             const canGet = await isManager(req);
             if (!canGet) {

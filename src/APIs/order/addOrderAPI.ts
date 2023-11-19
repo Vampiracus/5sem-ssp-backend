@@ -17,6 +17,8 @@ import setOrderHasContract from './setOrderHasContract';
 import setContractIsSigned from './setContractIsSigned';
 import userDeleteOrder from './userDeleteOrder';
 import getMyOrders from './getMyOrders';
+import { orderURL } from '../url';
+import getOrderItems from './getOrderItems';
 
 type Order = {
     id: number,
@@ -34,7 +36,7 @@ export default function (app: Express) {
         '_order',
         'id',
         ['total', 'contract', 'contract_date', 'status', 'client_login'],
-        '/order',
+        orderURL,
         {
             post: isAuthorized,
             get: isManager,
@@ -53,6 +55,7 @@ export default function (app: Express) {
     userDeleteOrder(app);
     getOrdersWithoutContract(app);
     getMyOrders(app);
+    getOrderItems(app);
 
     setOrderWaitingForChanges(app);
     setOrderHasContract(app);

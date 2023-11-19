@@ -1,8 +1,9 @@
 import { Express } from 'express';
 import { isAuthorized } from '../../cookies/cookies';
+import { getMyOrdersURL } from '../url';
 
 export default function getMyOrders(app: Express) {
-    app.get('/order/my', async (req, res) => {
+    app.get(getMyOrdersURL, async (req, res) => {
         try {
             const canGet = await isAuthorized(req);
             if (!canGet || !req.user) {
@@ -14,7 +15,7 @@ export default function getMyOrders(app: Express) {
                 return;
             }
             const sql = global.mysqlconn.format(`
-            SELECT * FROM _order
+            SELECT id, total, contract, contract_date, status FROM _order
             WHERE client_login = ?
             LIMIT 50
             `, [req.user.login]); // В будущем добавить пагинацию!!

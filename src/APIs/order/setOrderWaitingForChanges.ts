@@ -1,8 +1,9 @@
 import { Express } from 'express';
 import { isManager } from '../../cookies/cookies';
+import { managerSendsOrderBackURL } from '../url';
 
 export default function setOrderWaitingForChanges(app: Express) {
-    app.patch('/order/wait_for_changes/:id', async (req, res) => {
+    app.patch(managerSendsOrderBackURL, async (req, res) => {
         const canPatch = await isManager(req);
         if (!canPatch) {
             res.status(403).send('');

@@ -1,8 +1,9 @@
 import { Express } from 'express';
 import { isManagerOrSameUser_order_patch } from '../../cookies/cookies';
+import { userSendsOrderURL } from '../url';
 
 export default function userCreateOrder(app: Express) {
-    app.patch('/order/create/:id', async (req, res) => {
+    app.patch(userSendsOrderURL, async (req, res) => {
         const canPatch = await isManagerOrSameUser_order_patch(req); // gets user into req.user
         if (!canPatch) {
             res.status(403).send('');

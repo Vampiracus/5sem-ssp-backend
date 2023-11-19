@@ -1,4 +1,5 @@
 export default function (err: unknown) {
+    console.log(err);
     if (typeof err === 'object' && err !== null) {
         if ('sqlMessage' in err) {
             if (err.sqlMessage === 'Check constraint \'valid_status\' is violated.') {
@@ -6,6 +7,6 @@ export default function (err: unknown) {
             }
         }
         if ('code' in err && err.code === 'ER_NO_REFERENCED_ROW_2') 
-            return 'Некорректный id заказа';
+            return 'Некорректный id заказа или product id';
     }
 }
