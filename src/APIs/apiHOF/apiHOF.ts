@@ -32,7 +32,7 @@ export default function apiHOF<DataType extends Record<string, any>>(
     const put = getPut(tableName, idColumnName, columns, dataValidator, errInterpreter);
     app.put(url, putRespondHOF(put, userValidator.put));
 
-    const get = getGet(tableName, columns.concat([idColumnName]));
+    const get = getGet(tableName, [idColumnName].concat(columns));
     app.get(url, getRespondHOF(get, userValidator.get));
 
     if (userValidator.delete === 'no delete') return;

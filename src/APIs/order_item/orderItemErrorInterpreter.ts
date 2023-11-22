@@ -1,5 +1,4 @@
 export default function (err: unknown) {
-    console.log(err);
     if (typeof err === 'object' && err !== null) {
         if ('sqlMessage' in err) {
             if (err.sqlMessage === 'Check constraint \'valid_status\' is violated.') {

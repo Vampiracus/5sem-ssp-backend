@@ -29,6 +29,11 @@ export default function (app: Express) {
             if (isPost && (product.id as unknown) !== 'NULL')
                 return 'ID должно быть NULL';
             return true;
+        },
+        err => {
+            const msg: string | undefined = (err as Record<string, any>).sqlMessage;
+            if (msg && msg.match(/^Check constraint/))
+                return 'Не проходят проверки ограничений целостностности';
         }
     );
 }

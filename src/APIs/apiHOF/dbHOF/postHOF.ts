@@ -2,7 +2,7 @@ export default function getPost<DataType extends Record<string, any>>(
     tableName: string,
     columns: string[],
     dataValidator?: (obj: DataType, isPost?: boolean) => string | boolean,
-    errorInterpreter?: (err: { code: string}) => string | void
+    errorInterpreter?: (err: { code: string }) => string | void
 ) {
     type postFunction = (postedObject: Record<string, any> | DataType) 
                       => Promise<boolean | string> | string;
