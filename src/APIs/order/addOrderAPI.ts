@@ -19,6 +19,7 @@ import getMyOrders from './getMyOrders';
 import getOrderItems from './getOrderItems';
 import setMeAsOrderManager from './setMeAsOrderManager';
 import unsetMeAsOrderManager from './unsetMeAsOrderManager';
+import setOrderIsReady from './setOrderIsReady';
 
 type Order = {
     id: number,
@@ -35,7 +36,7 @@ export default function (app: Express) {
         app,
         '_order',
         'id',
-        ['total', 'contract', 'contract_date', 'status', 'client_login'],
+        ['total', 'contract', 'contract_date', 'status', 'client_login', 'manager_login'],
         orderURL,
         {
             post: isAuthorized,
@@ -60,6 +61,7 @@ export default function (app: Express) {
     setOrderWaitingForChanges(app);
     setOrderHasContract(app);
     setContractIsSigned(app);
+    setOrderIsReady(app);
 
     setMeAsOrderManager(app);
     unsetMeAsOrderManager(app);

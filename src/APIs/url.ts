@@ -18,5 +18,6 @@ export const getOrderItemsURL = '/order/items/:orderid';
 export const managerSendsOrderBackURL = '/order/wait_for_changes/:id';
 export const managerSetsOrderContractURL = '/order/has_contract/:id';
 export const managerSetsOrderContractIsSignedURL = '/order/is_signed/:id';
+export const managerSetsOrderIsReadyURL = '/order/ready/:id';
 export const managerSetOrderManagerURL = '/order/set_manager/:id';
 export const managerUnsetOrderManagerURL = '/order/unset_manager/:id';
