@@ -2,6 +2,7 @@ import { Express } from 'express';
 
 import apiHOF from '../apiHOF/apiHOF';
 import orderErrorInterpreter from './orderErrorInterpreter';
+import { orderURL } from '../url';
 
 import {
     isAuthorized,
@@ -9,16 +10,15 @@ import {
 } from '../../cookies/cookies';
 
 import userCreateOrder from './userCreateOrder';
-
 import getOrdersWithoutContract from './getOrdersWithoutContract';
-
 import setOrderWaitingForChanges from './setOrderWaitingForChanges';
 import setOrderHasContract from './setOrderHasContract';
 import setContractIsSigned from './setContractIsSigned';
 import userDeleteOrder from './userDeleteOrder';
 import getMyOrders from './getMyOrders';
-import { orderURL } from '../url';
 import getOrderItems from './getOrderItems';
+import setMeAsOrderManager from './setMeAsOrderManager';
+import unsetMeAsOrderManager from './unsetMeAsOrderManager';
 
 type Order = {
     id: number,
@@ -60,4 +60,7 @@ export default function (app: Express) {
     setOrderWaitingForChanges(app);
     setOrderHasContract(app);
     setContractIsSigned(app);
+
+    setMeAsOrderManager(app);
+    unsetMeAsOrderManager(app);
 }

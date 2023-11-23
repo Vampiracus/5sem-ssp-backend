@@ -20,14 +20,14 @@ export default function userCreateOrder(app: Express) {
         global.mysqlconn.query(query, async (err, result) => {
             if (err) {
                 console.log(err);
-                res.status(500).send('Неудача');
+                res.status(500).send('Что-то пошло не так');
                 return;
             }
             if (result.length === 0) {
                 res.status(404).send('Некорректный id');
                 return;
             }
-            if (result[0].status !== 'created' || result[0].status !== 'waiting for changes') {
+            if (result[0].status !== 'created' && result[0].status !== 'waiting for changes') {
                 res.status(400).send('Статус заказа не created и не waiting for changes');
                 return;
             }
@@ -45,7 +45,7 @@ export default function userCreateOrder(app: Express) {
             global.mysqlconn.query(sql, err => {
                 if (err) {
                     console.log(err);
-                    res.status(500).send('Неудача');
+                    res.status(500).send('Что-то пошло не так');
                     return;
                 }
                 res.status(200).send('OK');

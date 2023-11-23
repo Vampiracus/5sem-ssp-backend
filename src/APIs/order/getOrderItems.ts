@@ -25,7 +25,9 @@ export default function getOrderItems(app: Express) {
                 `, [req.user.login, orderid]);
             } else {
                 sql = global.mysqlconn.format(`
-                    SELECT * FROM order_item
+                    SELECT i.id, i.product_count, i.order_id, i.product_id, p.name
+                    FROM order_item i JOIN _order o ON i.order_id = o.id
+                        JOIN product p ON p.id = i.product_id
                     WHERE order_id = ?;
                 `, [orderid]);
             }

@@ -10,6 +10,11 @@ export default function (err: unknown) {
             
         }
         if ('code' in err && err.code === 'ER_DUP_ENTRY') 
-            return 'Такой логин уже есть!'; 
+            return 'Такой логин уже есть!';
+        if ('sqlMessage' in err) {
+            const msg = err.sqlMessage;
+            if (msg && typeof msg === 'string' && msg.match(/^Check constraint/))
+                return 'Не проходят проверки ограничений целостностности';
+        }
     }
 }

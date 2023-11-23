@@ -19,12 +19,14 @@ export default function setOrderHasContract(app: Express) {
             return;
         }
 
+        console.log(contract_date);
         contract_date = new Date(Number(contract_date)); // Дата должна приходить в виде числа
         if (isNaN(contract_date)) {
             res.status(400).send('Неправильная дата');
             return;
         }
         contract_date = contract_date.toISOString().slice(0, 19).replace('T', ' ');
+        console.log(contract_date);
 
         let sql = 'SELECT status FROM _order WHERE id = ?';
         let query = global.mysqlconn.format(sql, [id]);

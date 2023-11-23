@@ -32,7 +32,9 @@ CREATE TABLE _order
 	status               VARCHAR(40) NOT NULL,
 	CONSTRAINT valid_status CHECK ( status IN ('created', 'processing (no contract)', 'waiting for changes', 'processing (no signature)', 'processing', 'cancelled', 'ready', 'finished') ),
 	client_login         VARCHAR(20) NOT NULL,
-	FOREIGN KEY (client_login) REFERENCES client (login)
+	FOREIGN KEY (client_login) REFERENCES client (login),
+	manager_login        VARCHAR(20),
+	FOREIGN KEY (manager_login) REFERENCES manager (login)
 );
 
 CREATE TABLE product
