@@ -33,9 +33,7 @@ export default function setMeAsOrderManager(app: Express) {
                 return;
             }
 
-            sql = `UPDATE _order SET
-                   manager_login = ?,
-                   WHERE id = ${id}`;
+            sql = `UPDATE _order SET manager_login = ? WHERE id = ${id}`;
             query = global.mysqlconn.format(sql, [req.user.login]);
             global.mysqlconn.query(query, err => {
                 if (err) {

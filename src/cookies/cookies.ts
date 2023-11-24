@@ -170,3 +170,17 @@ export async function isOrderCreatedOrWaitingForChangesAndIsUserManagerOrSameUse
         return false;
     }
 }
+
+export async function isResponsibleManager(req: Request, orderId: string): Promise<boolean> {
+    if (!(await isManager(req)) || !req.user) return false;
+    const sql = 'SELECT manager_login FROM _order WHERE id = ?';
+    const query = global.mysqlconn.format(sql, [orderId]);
+    const neededLogin = await new Promise((resolve, reject) => {
+        global.mysqlconn.query(query, (err, res) => {
+            if (err) reject(err);
+            if (res.length !== 1) resolve('');
+            resolve(res[0].manager_login);
+        });
+    });
+    return req.user.login === neededLogin;
+}

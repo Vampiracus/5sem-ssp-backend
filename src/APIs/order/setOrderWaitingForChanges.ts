@@ -1,20 +1,21 @@
 import { Express } from 'express';
-import { isManager } from '../../cookies/cookies';
+import { isResponsibleManager } from '../../cookies/cookies';
 import { managerSendsOrderBackURL } from '../url';
 
 export default function setOrderWaitingForChanges(app: Express) {
     app.patch(managerSendsOrderBackURL, async (req, res) => {
-        const canPatch = await isManager(req);
-        if (!canPatch) {
-            res.status(403).send('');
-            return;
-        }
-
         const { id } = req.params;
         if (!id) {
             res.status(400).send('Не выбран id заказа');
             return;
         }
+
+        const canPatch = await isResponsibleManager(req, id);
+        if (!canPatch) {
+            res.status(403).send('');
+            return;
+        }
+
         let sql = 'SELECT status FROM _order WHERE id = ?';
         const query = global.mysqlconn.format(sql, [id]);
         global.mysqlconn.query(query, (err, result) => {

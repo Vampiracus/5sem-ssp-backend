@@ -34,7 +34,7 @@ export default function unsetMeAsOrderManager(app: Express) {
             }
 
             query = `UPDATE _order SET
-                   manager_login = NULL,
+                   manager_login = NULL
                    WHERE id = ${id}`;
             global.mysqlconn.query(query, err => {
                 if (err) {

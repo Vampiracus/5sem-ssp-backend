@@ -1,19 +1,20 @@
 import { Express } from 'express';
-import { isManager } from '../../cookies/cookies';
+import { isResponsibleManager } from '../../cookies/cookies';
 import { managerSetsOrderContractIsSignedURL } from '../url';
 
 export default function setContractIsSigned(app: Express) {
     // Дата должна приходить в виде числа
     app.patch(managerSetsOrderContractIsSignedURL, async (req, res) => {
-        const canPatch = await isManager(req);
-        if (!canPatch) {
-            res.status(403).send('');
+        const { id } = req.params;
+
+        if (!id) {
+            res.status(400).send('Не выбран id заказа');
             return;
         }
 
-        const { id } = req.params;
-        if (!id) {
-            res.status(400).send('Не выбран id заказа');
+        const canPatch = await isResponsibleManager(req, id);
+        if (!canPatch) {
+            res.status(403).send('');
             return;
         }
 

@@ -1,19 +1,19 @@
 import { Express } from 'express';
-import { isManager } from '../../cookies/cookies';
+import { isResponsibleManager } from '../../cookies/cookies';
 import { managerSetsOrderIsReadyURL } from '../url';
 
 export default function setOrderIsReady(app: Express) {
     // Дата должна приходить в виде числа
     app.patch(managerSetsOrderIsReadyURL, async (req, res) => {
-        const canPatch = await isManager(req);
-        if (!canPatch) {
-            res.status(403).send('');
-            return;
-        }
-
         const { id } = req.params;
         if (!id) {
             res.status(400).send('Не выбран id заказа');
+            return;
+        }
+
+        const canPatch = await isResponsibleManager(req, id);
+        if (!canPatch) {
+            res.status(403).send('');
             return;
         }
 
