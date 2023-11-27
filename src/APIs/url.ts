@@ -12,9 +12,11 @@ export const loginManagerURL = '/login/manager';
 export const logoutURL = '/logout';
 
 export const userDeletesOrderURL = '/order/:id';
+export const userDeletesOrderItemURL = '/order_item/:id';
 export const userSendsOrderURL = '/order/create/:id';
 export const getMyOrdersURL = '/order/my';
 export const getOrderItemsURL = '/order/items/:orderid';
+export const getOrderShippedURL = '/order/shipped/:orderid';
 export const managerSendsOrderBackURL = '/order/wait_for_changes/:id';
 export const managerSetsOrderContractURL = '/order/has_contract/:id';
 export const managerSetsOrderContractIsSignedURL = '/order/is_signed/:id';

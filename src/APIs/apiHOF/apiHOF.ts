@@ -10,7 +10,7 @@ import deleteRespondHOF from './respondHOF/deleteRespondHOF';
 
 type UserValidator = {
     get: (req: Request) => Promise<boolean>,
-    post: (req: Request) => Promise<boolean>,
+    post: 'no post' | ((req: Request) => Promise<boolean>),
     put: (req: Request) => Promise<boolean>,
     delete: 'no delete' | ((req: Request) => Promise<boolean>)
 }
@@ -26,8 +26,11 @@ export default function apiHOF<DataType extends Record<string, any>>(
     dataValidator?: (data: DataType, isPost?: boolean, req?: Request) => string | boolean,
     errInterpreter?: (err: { code: string}) => string | void
 ) {
-    const post = getPost(tableName, columns.concat([idColumnName]), dataValidator, errInterpreter);
-    app.post(url, postRespondHOF(post, userValidator.post));
+    if (userValidator.post !== 'no post') {
+        const post
+        = getPost(tableName, columns.concat([idColumnName]), dataValidator, errInterpreter);
+        app.post(url, postRespondHOF(post, userValidator.post));
+    }
 
     const put = getPut(tableName, idColumnName, columns, dataValidator, errInterpreter);
     app.put(url, putRespondHOF(put, userValidator.put));

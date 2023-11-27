@@ -7,5 +7,7 @@ export default function (err: unknown) {
         }
         if ('code' in err && err.code === 'ER_NO_REFERENCED_ROW_2') 
             return 'Некорректный id заказа или product id';
+        if ('code' in err && err.code === 'ER_DUP_ENTRY') 
+            return 'В заказ нельзя больше добавить таких товаров';
     }
 }

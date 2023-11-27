@@ -18,17 +18,23 @@ export default function getOrderItems(app: Express) {
             let sql: string;
             if (req.user.user_type === 'client') {
                 sql = global.mysqlconn.format(`
-                    SELECT i.id, i.product_count, i.order_id, i.product_id, p.name
+                    SELECT i.id, i.product_count, i.order_id, 
+                        i.product_id, p.name, sum(shipped_count) shipped
                     FROM order_item i JOIN _order o ON i.order_id = o.id
                         JOIN product p ON p.id = i.product_id
-                    WHERE o.client_login = ? and i.order_id =  ?;
+                        LEFT JOIN shipment on shipment.order_item_id = i.id
+                    WHERE o.client_login = ? and i.order_id =  ?
+                    GROUP BY shipment.order_item_id, i.id
                 `, [req.user.login, orderid]);
             } else {
                 sql = global.mysqlconn.format(`
-                    SELECT i.id, i.product_count, i.order_id, i.product_id, p.name
-                    FROM order_item i JOIN _order o ON i.order_id = o.id
+                    SELECT i.id, i.product_count, i.order_id, i.product_id, p.name,
+                        sum(shipped_count) shipped
+                    FROM order_item i
                         JOIN product p ON p.id = i.product_id
-                    WHERE order_id = ?;
+                        LEFT JOIN shipment on shipment.order_item_id = i.id
+                    WHERE order_id = ?
+                    GROUP BY shipment.order_item_id, i.id
                 `, [orderid]);
             }
             const result = await new Promise((resolve, reject) => {

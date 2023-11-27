@@ -20,6 +20,7 @@ import getOrderItems from './getOrderItems';
 import setMeAsOrderManager from './setMeAsOrderManager';
 import unsetMeAsOrderManager from './unsetMeAsOrderManager';
 import setOrderIsReady from './setOrderIsReady';
+import getShipped from './getShipped';
 
 type Order = {
     id: number,
@@ -57,6 +58,7 @@ export default function (app: Express) {
     getOrdersWithoutContract(app);
     getMyOrders(app);
     getOrderItems(app);
+    getShipped(app);
 
     setOrderWaitingForChanges(app);
     setOrderHasContract(app);

@@ -54,7 +54,8 @@ CREATE TABLE order_item
 	order_id             INTEGER NOT NULL,
 	FOREIGN KEY (order_id) REFERENCES _order (id),
 	product_id           INTEGER NOT NULL,
-	FOREIGN KEY (product_id) REFERENCES product (id)
+	FOREIGN KEY (product_id) REFERENCES product (id),
+	UNIQUE(order_id, product_id)
 );
 
 CREATE TABLE session
