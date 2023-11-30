@@ -1,9 +1,9 @@
 import { Express } from 'express';
 import { isResponsibleManager } from '../../cookies/cookies';
-import { managerSetsOrderIsReadyURL } from '../url';
+import { managerSetsOrderIsFinishedURL } from '../url';
 
-export default function setOrderIsReady(app: Express) {
-    app.patch(managerSetsOrderIsReadyURL, async (req, res) => {
+export default function setOrderIsFinished(app: Express) {
+    app.patch(managerSetsOrderIsFinishedURL, async (req, res) => {
         const { id } = req.params;
         if (!id) {
             res.status(400).send('Не выбран id заказа');
@@ -28,13 +28,13 @@ export default function setOrderIsReady(app: Express) {
                 res.status(404).send('Некорректный id');
                 return;
             }
-            if (result[0].status !== 'processing') {
-                res.status(400).send('Статус заказа не processing');
+            if (result[0].status !== 'ready') {
+                res.status(400).send('Статус заказа не ready');
                 return;
             }
 
             sql = `UPDATE _order SET
-                   status = 'ready'
+                   status = 'finished'
                    WHERE id = ${id}`;
             global.mysqlconn.query(sql, err => {
                 if (err) {

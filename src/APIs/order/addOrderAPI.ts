@@ -21,6 +21,7 @@ import setMeAsOrderManager from './setMeAsOrderManager';
 import unsetMeAsOrderManager from './unsetMeAsOrderManager';
 import setOrderIsReady from './setOrderIsReady';
 import getShipped from './getShipped';
+import setOrderIsFinished from './setOrderIsFinished';
 
 type Order = {
     id: number,
@@ -64,6 +65,7 @@ export default function (app: Express) {
     setOrderHasContract(app);
     setContractIsSigned(app);
     setOrderIsReady(app);
+    setOrderIsFinished(app);
 
     setMeAsOrderManager(app);
     unsetMeAsOrderManager(app);

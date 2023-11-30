@@ -179,7 +179,7 @@ export async function isResponsibleManager(req: Request, orderId: string): Promi
         global.mysqlconn.query(query, (err, res) => {
             if (err) reject(err);
             if (res.length !== 1) resolve('');
-            resolve(res[0].manager_login);
+            else resolve(res[0].manager_login);
         });
     });
     return req.user.login === neededLogin;
