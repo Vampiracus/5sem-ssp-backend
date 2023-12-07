@@ -20,11 +20,7 @@ export default function (app: Express) {
             put: isManager,
             delete: 'no delete',
         },
-        (item, isPost) => {
-            if (isPost && (item.id as unknown) !== 'NULL')
-                return 'ID должно быть NULL';
-            return true;
-        },
+        undefined,
         orderItemErrorInterpreter
     );
 

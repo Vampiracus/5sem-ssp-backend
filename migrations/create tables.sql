@@ -83,3 +83,11 @@ CREATE TABLE shipment
 	order_item_id        INTEGER NOT NULL,
 	FOREIGN KEY (order_item_id) REFERENCES order_item (id)
 );
+
+CREATE TRIGGER update_total_on_cost_change AFTER UPDATE on product
+FOR EACH ROW
+UPDATE _order SET total = total + (NEW.cost - OLD.cost) * IFNULL((
+SELECT product_count FROM order_item oi
+WHERE oi.order_id = _order.id and oi.product_id = NEW.id
+), 0)
+WHERE status = 'created';

@@ -18,7 +18,7 @@ export default function (app: Express) {
         productURL,
         {
             post: isManager,
-            get: isManager,
+            get: async () => true,
             put: isManager,
             delete: isManager,
         },
@@ -34,6 +34,9 @@ export default function (app: Express) {
             const msg: string | undefined = (err as Record<string, any>).sqlMessage;
             if (msg && msg.match(/^Check constraint/))
                 return 'Не проходят проверки ограничений целостностности';
+            if (err.code && err.code === 'R_ROW_IS_REFERENCED_2') {
+                return 'Этот товар нельзя удалить, потому что он уже заказан';
+            }
         }
     );
 }

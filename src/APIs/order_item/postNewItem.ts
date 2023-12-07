@@ -19,12 +19,25 @@ export default function postNewItem(app: Express) {
                 return `Передан невалидный JSON-объект: нет поля ${column}`;
             }
         }
+        
+        if (Number(body.product_count) <= 0) {
+            res.status(400).send('Количество товара должно быть положительным целым числом');
+            return;
+        }
 
         let sql = 'INSERT order_item VALUES(NULL, ?, ?, ?)';
         let query
             = global.mysqlconn.format(sql, [body.product_count, body.order_id, body.product_id]);
         global.mysqlconn.query(query, err => {
             if (err) {
+                if (err.code && err.code === 'ER_NO_REFERENCED_ROW_2') {
+                    res.status(400).send('Некорректный id продукта');
+                    return;
+                }
+                if (err.code && err.code === 'ER_DUP_ENTRY') {
+                    res.status(400).send('Такой товар уже есть в заказе!');
+                    return;
+                }
                 console.log(err);
                 res.status(500).send('Что-то пошло не так');
                 return;

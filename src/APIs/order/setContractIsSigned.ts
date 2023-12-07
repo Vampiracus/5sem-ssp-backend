@@ -30,7 +30,8 @@ export default function setContractIsSigned(app: Express) {
                 res.status(404).send('Некорректный id');
                 return;
             }
-            if (result[0].status !== 'processing (no signature)') {
+            const { status } = result[0];
+            if (status !== 'processing (no signature)' && status !== 'ready') {
                 res.status(400).send('Статус заказа не processing (no signature)');
                 return;
             }

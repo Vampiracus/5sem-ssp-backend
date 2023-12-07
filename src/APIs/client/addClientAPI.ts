@@ -1,7 +1,7 @@
 import { Express } from 'express';
 import apiHOF from '../apiHOF/apiHOF';
 import clientErrorInterpreter from './clientErrorInterpreter';
-import { isManager } from '../../cookies/cookies';
+import { isAuthorized, isManager } from '../../cookies/cookies';
 import { clientURL } from '../url';
 
 type Client = {
@@ -21,7 +21,7 @@ export default function (app: Express) {
         ['name', 'password', 'address', 'phone'],
         clientURL,
         {
-            post: isManager,
+            post: async req => !(await isAuthorized(req)),
             get: isManager,
             put: isManager,
             delete: isManager,
