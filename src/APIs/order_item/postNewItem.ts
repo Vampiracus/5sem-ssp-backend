@@ -20,8 +20,9 @@ export default function postNewItem(app: Express) {
             }
         }
         
-        if (Number(body.product_count) <= 0) {
-            res.status(400).send('Количество товара должно быть положительным целым числом');
+        if (Number(body.product_count) <= 0 || Number(body.product_count) > 1000000) {
+            res.status(400)
+                .send('Количество товара должно быть положительным целым числом не больше 1000000');
             return;
         }
 
